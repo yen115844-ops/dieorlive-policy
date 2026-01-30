@@ -79,6 +79,15 @@ class ApiService {
     );
   }
 
+  async deleteUser(id: number) {
+    return this.request<{ success: boolean; message: string }>(
+      `/admin/users/${id}`,
+      {
+        method: 'DELETE',
+      }
+    );
+  }
+
   // Check-ins
   async getCheckIns(params?: {
     page?: number;

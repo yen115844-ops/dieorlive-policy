@@ -279,6 +279,25 @@ export default function UsersPage() {
                               Kích hoạt
                             </DropdownMenuItem>
                           )}
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem 
+                            className="text-red-600 focus:text-red-600"
+                            onClick={async () => {
+                              if (window.confirm('Bạn có chắc chắn muốn xóa người dùng này? Hành động này không thể hoàn tác và sẽ xóa tất cả dữ liệu liên quan.')) {
+                                try {
+                                  await api.deleteUser(user.id);
+                                  toast.success('Đã xóa người dùng thành công');
+                                  fetchUsers();
+                                } catch (error) {
+                                  toast.error('Không thể xóa người dùng');
+                                  console.error(error);
+                                }
+                              }
+                            }}
+                          >
+                            <UserX className="mr-2 h-4 w-4" />
+                            Xóa tài khoản
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

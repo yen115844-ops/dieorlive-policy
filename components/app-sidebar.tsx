@@ -113,7 +113,7 @@ function SidebarContent({ onItemClick }: { onItemClick?: () => void }) {
 
 export function AppSidebar({ className }: SidebarProps) {
   return (
-    <aside className={cn("hidden w-64 border-r bg-card lg:block", className)}>
+    <aside className={cn("hidden w-56 shrink-0 border-r bg-card md:w-64 lg:block", className)}>
       <SidebarContent />
     </aside>
   );
@@ -130,7 +130,7 @@ export function MobileSidebar() {
           <span className="sr-only">Toggle menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="w-64 p-0">
+      <SheetContent side="left" className="w-[85vw] max-w-[280px] p-0 sm:w-64">
         <SidebarContent onItemClick={() => setOpen(false)} />
       </SheetContent>
     </Sheet>

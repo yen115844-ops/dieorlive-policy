@@ -145,23 +145,23 @@ export default function AlertsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Cảnh báo khẩn cấp</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Cảnh báo khẩn cấp</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Quản lý và gửi thông báo khi người dùng không check-in
           </p>
         </div>
-        <Button variant="outline" onClick={fetchAlerts}>
+        <Button variant="outline" size="sm" className="shrink-0 sm:size-default" onClick={fetchAlerts}>
           <RefreshCw className="mr-2 h-4 w-4" />
           Làm mới
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 grid-cols-2 sm:gap-4 md:grid-cols-3">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
@@ -241,14 +241,14 @@ export default function AlertsPage() {
       </Card>
 
       {/* Alerts Table */}
-      <Card>
+      <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Danh sách cảnh báo</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Danh sách cảnh báo</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             Tổng cộng {totalCount} cảnh báo
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -324,9 +324,9 @@ export default function AlertsPage() {
                             Gửi ngay
                           </Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent className="w-[95vw] max-w-md sm:max-w-lg">
                           <DialogHeader>
-                            <DialogTitle>Xác nhận gửi cảnh báo</DialogTitle>
+                            <DialogTitle className="text-lg sm:text-xl">Xác nhận gửi cảnh báo</DialogTitle>
                             <DialogDescription>
                               Bạn có chắc muốn gửi email thông báo khẩn cấp đến{" "}
                               <span className="font-medium">{alert.contact_name}</span> về tình trạng của{" "}
@@ -376,13 +376,13 @@ export default function AlertsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-muted-foreground sm:text-sm order-2 sm:order-1">
                 Hiển thị {(currentPage - 1) * itemsPerPage + 1} -{" "}
                 {Math.min(currentPage * itemsPerPage, totalCount)} của{" "}
                 {totalCount} kết quả
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 order-1 sm:order-2">
                 <Button
                   variant="outline"
                   size="icon"

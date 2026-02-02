@@ -122,4 +122,8 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Smooth horizontal scroll on touch devices */
+  .overflow-x-auto {
+    -webkit-overflow-scrolling: touch;
+  }
 }

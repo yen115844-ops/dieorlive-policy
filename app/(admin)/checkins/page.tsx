@@ -138,21 +138,21 @@ export default function CheckInsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Lịch sử Check-in</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Lịch sử Check-in</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Xem tất cả check-in của người dùng trong hệ thống
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={fetchCheckIns}>
+        <div className="flex flex-wrap gap-2 shrink-0">
+          <Button variant="outline" size="sm" className="sm:size-default" onClick={fetchCheckIns}>
             <RefreshCw className="mr-2 h-4 w-4" />
             Làm mới
           </Button>
-          <Button variant="outline" className="w-fit" asChild>
+          <Button variant="outline" size="sm" className="w-fit sm:size-default" asChild>
             <a href={api.getExportCheckInsUrl({ dateFrom: dateFilter !== "all" ? dateFilter : undefined })} download>
               <Download className="mr-2 h-4 w-4" />
               Xuất báo cáo
@@ -162,7 +162,7 @@ export default function CheckInsPage() {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:gap-4">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
@@ -245,14 +245,14 @@ export default function CheckInsPage() {
       </Card>
 
       {/* Check-ins Table */}
-      <Card>
+      <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Danh sách check-in</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Danh sách check-in</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             Tổng cộng {totalCount} lượt check-in
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -314,13 +314,13 @@ export default function CheckInsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-muted-foreground sm:text-sm order-2 sm:order-1">
                 Hiển thị {(currentPage - 1) * itemsPerPage + 1} -{" "}
                 {Math.min(currentPage * itemsPerPage, totalCount)} của{" "}
                 {totalCount} kết quả
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 order-1 sm:order-2">
                 <Button
                   variant="outline"
                   size="icon"

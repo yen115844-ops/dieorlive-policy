@@ -63,7 +63,7 @@ function StatCard({
         {loading ? (
           <Skeleton className="h-8 w-20" />
         ) : (
-          <div className="text-2xl font-bold">{value.toLocaleString()}</div>
+          <div className="text-xl font-bold sm:text-2xl">{value.toLocaleString()}</div>
         )}
       </CardContent>
     </Card>
@@ -115,16 +115,16 @@ export default function DashboardPage() {
   }, [fetchData]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Dashboard</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Tổng quan về hệ thống Die or Live
           </p>
         </div>
-        <Button variant="outline" onClick={fetchData} disabled={loading}>
+        <Button variant="outline" size="sm" className="shrink-0 sm:size-default" onClick={fetchData} disabled={loading}>
           <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
           Làm mới
         </Button>
@@ -142,7 +142,7 @@ export default function DashboardPage() {
       )}
 
       {/* Stats Grid */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 sm:gap-4 md:grid-cols-2 lg:grid-cols-4">
         <StatCard
           title="Tổng người dùng"
           value={data?.totalUsers ?? 0}
@@ -174,23 +174,23 @@ export default function DashboardPage() {
       </div>
 
       {/* Content Grid */}
-      <div className="grid gap-6 lg:grid-cols-7">
+      <div className="grid gap-4 lg:grid-cols-7 lg:gap-6">
         {/* Recent Check-ins */}
-        <Card className="lg:col-span-4">
-          <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-              <CardTitle>Check-in gần đây</CardTitle>
-              <CardDescription>
+        <Card className="min-w-0 lg:col-span-4">
+          <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <CardTitle className="text-lg sm:text-xl">Check-in gần đây</CardTitle>
+              <CardDescription className="text-xs sm:text-sm">
                 Danh sách người dùng đã check-in gần đây
               </CardDescription>
             </div>
-            <Link href="/checkins">
-              <Button variant="outline" size="sm">
+            <Link href="/checkins" className="shrink-0">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 Xem tất cả
               </Button>
             </Link>
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
             {loading ? (
               <div className="space-y-3">
                 {[...Array(5)].map((_, i) => (
@@ -241,16 +241,12 @@ export default function DashboardPage() {
         </Card>
 
         {/* Stats Summary */}
-        <Card className="lg:col-span-3">
+        <Card className="min-w-0 lg:col-span-3">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              Thống kê tổng quan
-            </CardTitle>
-            <CardDescription>
-              Số liệu tổng hợp hệ thống
-            </CardDescription>
+            <CardTitle className="text-lg sm:text-xl">Thống kê tổng quan</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Số liệu tổng hợp hệ thống</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-3 sm:space-y-4">
             <div className="flex items-center justify-between rounded-lg border p-3">
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-blue-100 p-2 dark:bg-blue-900">
@@ -314,21 +310,19 @@ export default function DashboardPage() {
       </div>
 
       {/* Recent Users */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div>
-            <CardTitle>Người dùng mới</CardTitle>
-            <CardDescription>
-              Những người dùng đăng ký gần đây
-            </CardDescription>
+      <Card className="min-w-0">
+        <CardHeader className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <CardTitle className="text-lg sm:text-xl">Người dùng mới</CardTitle>
+            <CardDescription className="text-xs sm:text-sm">Những người dùng đăng ký gần đây</CardDescription>
           </div>
-          <Link href="/users">
-            <Button variant="outline" size="sm">
+          <Link href="/users" className="shrink-0">
+            <Button variant="outline" size="sm" className="w-full sm:w-auto">
               Xem tất cả
             </Button>
           </Link>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
           {loading ? (
             <div className="space-y-3">
               {[...Array(4)].map((_, i) => (

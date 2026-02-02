@@ -179,6 +179,33 @@ class ApiService {
     );
   }
 
+  /** Gửi thông báo FCM đến 1 hoặc nhiều người dùng (hoặc tất cả). */
+  async sendFcmNotification(params: {
+    userIds?: number[];
+    sendToAll?: boolean;
+    title: string;
+    body?: string;
+    data?: Record<string, string>;
+  }) {
+    const { userIds, sendToAll, title, body, data } = params;
+    return this.request<{
+      success: boolean;
+      message: string;
+      sent_count: number;
+      failed_count: number;
+      results?: { userId: number; success: boolean; error?: string }[];
+    }>('/admin/notifications/send-fcm', {
+      method: 'POST',
+      body: JSON.stringify({
+        user_ids: userIds,
+        send_to_all: sendToAll,
+        title: title.trim(),
+        body: body?.trim() ?? '',
+        data: data ?? {},
+      }),
+    });
+  }
+
   // Export functions
   getExportUsersUrl() {
     return `${this.baseUrl}/admin/export/users`;

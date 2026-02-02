@@ -181,24 +181,26 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Cài đặt hệ thống</h1>
-          <p className="text-muted-foreground">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Cài đặt hệ thống</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Quản lý cấu hình và cài đặt cho ứng dụng Die or Live
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 shrink-0">
           <Button 
             variant="outline" 
+            size="sm"
+            className="sm:size-default"
             onClick={fetchSettings}
             disabled={loading}
           >
             <RefreshCw className={`mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Làm mới
           </Button>
-          <Button onClick={handleSaveSettings} disabled={saving}>
+          <Button size="sm" className="sm:size-default" onClick={handleSaveSettings} disabled={saving}>
             {saving ? (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             ) : (
@@ -210,7 +212,7 @@ export default function SettingsPage() {
       </div>
 
       {/* System Health Cards */}
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:gap-4">
         {/* Database Status */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -282,22 +284,22 @@ export default function SettingsPage() {
       </div>
 
       {/* Settings Tabs */}
-      <Tabs defaultValue="general" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="general">
-            <Settings className="mr-2 h-4 w-4" />
+      <Tabs defaultValue="general" className="space-y-4 min-w-0">
+        <TabsList className="flex h-auto flex-wrap gap-1 p-1 w-full sm:inline-flex sm:w-auto">
+          <TabsTrigger value="general" className="flex-1 min-w-0 sm:flex-none text-xs sm:text-sm">
+            <Settings className="mr-1.5 h-4 w-4 shrink-0 sm:mr-2" />
             Tổng quan
           </TabsTrigger>
-          <TabsTrigger value="notifications">
-            <Bell className="mr-2 h-4 w-4" />
+          <TabsTrigger value="notifications" className="flex-1 min-w-0 sm:flex-none text-xs sm:text-sm">
+            <Bell className="mr-1.5 h-4 w-4 shrink-0 sm:mr-2" />
             Thông báo
           </TabsTrigger>
-          <TabsTrigger value="email">
-            <Mail className="mr-2 h-4 w-4" />
+          <TabsTrigger value="email" className="flex-1 min-w-0 sm:flex-none text-xs sm:text-sm">
+            <Mail className="mr-1.5 h-4 w-4 shrink-0 sm:mr-2" />
             Email
           </TabsTrigger>
-          <TabsTrigger value="security">
-            <Shield className="mr-2 h-4 w-4" />
+          <TabsTrigger value="security" className="flex-1 min-w-0 sm:flex-none text-xs sm:text-sm">
+            <Shield className="mr-1.5 h-4 w-4 shrink-0 sm:mr-2" />
             Bảo mật
           </TabsTrigger>
         </TabsList>
@@ -338,7 +340,7 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label>Phiên bản Admin</Label>
                   <div className="flex items-center space-x-2">
@@ -416,7 +418,7 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label>Nhắc nhở buổi sáng</Label>
                   <div className="flex items-center gap-2">
@@ -459,7 +461,7 @@ export default function SettingsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="smtp-host">SMTP Host</Label>
                   <Input
@@ -501,8 +503,8 @@ export default function SettingsPage() {
               </div>
               
               <div className="pt-4 border-t space-y-4">
-                <div className="flex items-end gap-4">
-                  <div className="space-y-2 flex-1">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:gap-4">
+                  <div className="space-y-2 flex-1 min-w-0">
                     <Label htmlFor="test-email">Email kiểm tra</Label>
                     <Input
                       id="test-email"

@@ -123,21 +123,21 @@ export default function UsersPage() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Quản lý người dùng</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Quản lý người dùng</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Xem và quản lý tất cả người dùng trong hệ thống
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={fetchUsers} disabled={loading}>
+        <div className="flex flex-wrap gap-2 shrink-0">
+          <Button variant="outline" size="sm" className="sm:size-default" onClick={fetchUsers} disabled={loading}>
             <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             Làm mới
           </Button>
-          <Button variant="outline" asChild>
+          <Button variant="outline" size="sm" asChild className="sm:size-default">
             <a href={api.getExportUsersUrl()} download>
               <Download className="mr-2 h-4 w-4" />
               Xuất Excel
@@ -175,14 +175,14 @@ export default function UsersPage() {
       </Card>
 
       {/* Users Table */}
-      <Card>
+      <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Danh sách người dùng</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Danh sách người dùng</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             Tổng cộng {total} người dùng
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
           {loading ? (
             <div className="space-y-3">
               {[...Array(5)].map((_, i) => (
@@ -316,12 +316,12 @@ export default function UsersPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-muted-foreground sm:text-sm order-2 sm:order-1">
                 Hiển thị {(currentPage - 1) * itemsPerPage + 1} -{" "}
                 {Math.min(currentPage * itemsPerPage, total)} của {total} kết quả
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 order-1 sm:order-2">
                 <Button
                   variant="outline"
                   size="icon"

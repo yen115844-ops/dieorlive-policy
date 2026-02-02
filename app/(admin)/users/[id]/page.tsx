@@ -177,27 +177,30 @@ export default function UserDetailPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
-        </Button>
-        <div className="flex-1">
-          <h1 className="text-3xl font-bold tracking-tight">Chi tiết người dùng</h1>
-          <p className="text-muted-foreground">ID: #{userId}</p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <Button variant="ghost" size="icon" className="shrink-0" onClick={() => router.back()}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-xl font-bold tracking-tight truncate sm:text-3xl">Chi tiết người dùng</h1>
+            <p className="text-sm text-muted-foreground">ID: #{userId}</p>
+          </div>
         </div>
-        <Button variant="outline" onClick={fetchUser}>
-          <RefreshCw className="mr-2 h-4 w-4" />
-          Làm mới
-        </Button>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline">
-              <MoreHorizontal className="mr-2 h-4 w-4" />
-              Thao tác
-            </Button>
-          </DropdownMenuTrigger>
+        <div className="flex flex-wrap items-center gap-2 sm:ml-auto">
+          <Button variant="outline" size="sm" className="sm:size-default" onClick={fetchUser}>
+            <RefreshCw className="mr-2 h-4 w-4" />
+            Làm mới
+          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="sm:size-default">
+                <MoreHorizontal className="mr-2 h-4 w-4" />
+                Thao tác
+              </Button>
+            </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Thao tác</DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -228,11 +231,11 @@ export default function UserDetailPage() {
       </div>
 
       {/* User Profile Card */}
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
+      <div className="grid gap-4 lg:grid-cols-3 lg:gap-6">
+        <Card className="min-w-0 lg:col-span-1">
           <CardContent className="pt-6">
             <div className="flex flex-col items-center text-center">
-              <Avatar className="h-24 w-24">
+              <Avatar className="h-20 w-20 sm:h-24 sm:w-24">
                 <AvatarImage src={user.avatar_url || undefined} />
                 <AvatarFallback className="bg-gradient-to-br from-rose-500 to-pink-600 text-white text-2xl">
                   {user.full_name
@@ -240,8 +243,8 @@ export default function UserDetailPage() {
                     : user.email[0].toUpperCase()}
                 </AvatarFallback>
               </Avatar>
-              <h2 className="mt-4 text-xl font-bold">{user.full_name || "Chưa cập nhật"}</h2>
-              <p className="text-muted-foreground">{user.email}</p>
+              <h2 className="mt-4 text-lg font-bold break-words sm:text-xl">{user.full_name || "Chưa cập nhật"}</h2>
+              <p className="text-sm text-muted-foreground break-all">{user.email}</p>
               <Badge className="mt-2" variant={user.is_active ? "default" : "secondary"}>
                 {user.is_active ? "Đang hoạt động" : "Đã vô hiệu"}
               </Badge>
@@ -263,8 +266,8 @@ export default function UserDetailPage() {
                 <span>{formatDate(user.date_of_birth)}</span>
               </div>
               <div className="flex items-center gap-3">
-                <Clock className="h-4 w-4 text-muted-foreground" />
-                <span>Nhắc nhở: {formatTime(user.reminder_time_1)}, {formatTime(user.reminder_time_2)}</span>
+                <Clock className="h-4 w-4 shrink-0 text-muted-foreground" />
+                <span className="text-sm break-words">Nhắc nhở: {formatTime(user.reminder_time_1)}, {formatTime(user.reminder_time_2)}</span>
               </div>
             </div>
 
@@ -278,9 +281,9 @@ export default function UserDetailPage() {
         </Card>
 
         {/* Stats & Tabs */}
-        <div className="lg:col-span-2 space-y-6">
+        <div className="min-w-0 lg:col-span-2 space-y-4 lg:space-y-6">
           {/* Stats Grid */}
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-3 grid-cols-2 sm:gap-4 lg:grid-cols-4">
             <Card>
               <CardContent className="pt-6">
                 <div className="text-center">
@@ -316,21 +319,21 @@ export default function UserDetailPage() {
           </div>
 
           {/* Tabs */}
-          <Tabs defaultValue="checkins" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
+          <Tabs defaultValue="checkins" className="w-full min-w-0">
+            <TabsList className="grid w-full grid-cols-2 h-auto flex-wrap gap-1 p-1">
               <TabsTrigger value="checkins">Lịch sử check-in</TabsTrigger>
               <TabsTrigger value="contacts">Người thân ({contacts.length})</TabsTrigger>
             </TabsList>
 
             <TabsContent value="checkins">
-              <Card>
+              <Card className="min-w-0 overflow-hidden">
                 <CardHeader>
-                  <CardTitle>Lịch sử check-in gần đây</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">Lịch sử check-in gần đây</CardTitle>
                   <CardDescription>
                     Check-in gần nhất: {stats?.last_check_in ? formatDate(stats.last_check_in) : "Chưa có"}
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
                   <Table>
                     <TableHeader>
                       <TableRow>
@@ -370,14 +373,14 @@ export default function UserDetailPage() {
             </TabsContent>
 
             <TabsContent value="contacts">
-              <Card>
+              <Card className="min-w-0 overflow-hidden">
                 <CardHeader>
-                  <CardTitle>Danh sách người thân</CardTitle>
+                  <CardTitle className="text-lg sm:text-xl">Danh sách người thân</CardTitle>
                   <CardDescription>
                     Những người sẽ nhận thông báo khẩn cấp
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
                   <Table>
                     <TableHeader>
                       <TableRow>

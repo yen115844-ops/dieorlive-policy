@@ -2,27 +2,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="container mx-auto py-6 max-w-4xl">
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold">Chính sách Quyền riêng tư - Những ngày còn lại</CardTitle>
-          <p className="text-sm text-muted-foreground">Cập nhật lần cuối: 30/01/2026</p>
+    <div className="container mx-auto max-w-4xl px-3 py-4 sm:px-4 sm:py-6">
+      <Card className="min-w-0 overflow-hidden">
+        <CardHeader className="px-4 sm:px-6">
+          <CardTitle className="text-xl font-bold sm:text-2xl">Chính sách Quyền riêng tư - Những ngày còn lại</CardTitle>
+          <p className="text-xs text-muted-foreground sm:text-sm">Cập nhật lần cuối: 30/01/2026</p>
         </CardHeader>
-        <CardContent className="prose dark:prose-invert max-w-none space-y-4">
+        <CardContent className="prose prose-sm dark:prose-invert max-w-none space-y-4 px-4 pb-6 sm:px-6 sm:prose-base">
           <p>
             Chào mừng bạn đến với <strong>"Những ngày còn lại"</strong> (sau đây gọi tắt là "Ứng dụng").
             Chúng tôi cam kết bảo vệ quyền riêng tư và dữ liệu cá nhân của bạn. Chính sách quyền riêng tư này giải thích
             cách chúng tôi thu thập, sử dụng, tiết lộ và bảo vệ thông tin của bạn khi bạn sử dụng ứng dụng di động của chúng tôi.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">1. Giới thiệu</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">1. Giới thiệu</h2>
           <p>
             "Những ngày còn lại" là một ứng dụng di động được thiết kế để theo dõi sự hiện diện của người dùng và gửi cảnh báo
             khẩn cấp cho người thân nếu người dùng không điểm danh trong một khoảng thời gian nhất định. Để cung cấp dịch vụ này,
             chúng tôi cần thu thập và xử lý một số thông tin cá nhân nhất định.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">2. Thông tin chúng tôi thu thập</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">2. Thông tin chúng tôi thu thập</h2>
           
           <h3 className="text-lg font-medium mt-4">a. Thông tin bạn cung cấp cho chúng tôi</h3>
           <ul className="list-disc pl-6 space-y-2">
@@ -50,7 +50,7 @@ export default function PrivacyPolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-xl font-semibold mt-6">3. Cách chúng tôi sử dụng thông tin của bạn</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">3. Cách chúng tôi sử dụng thông tin của bạn</h2>
           <p>Chúng tôi sử dụng thông tin thu thập được cho các mục đích sau:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
@@ -66,7 +66,7 @@ export default function PrivacyPolicyPage() {
             <li><strong>Hỗ trợ khách hàng:</strong> Giải quyết các vấn đề kỹ thuật hoặc thắc mắc của bạn.</li>
           </ul>
 
-          <h2 className="text-xl font-semibold mt-6">4. Chia sẻ thông tin của bạn</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">4. Chia sẻ thông tin của bạn</h2>
           <p>Chúng tôi không bán thông tin cá nhân của bạn cho bên thứ ba. Chúng tôi chỉ chia sẻ thông tin trong các trường hợp sau:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li>
@@ -84,7 +84,7 @@ export default function PrivacyPolicyPage() {
             </li>
           </ul>
 
-          <h2 className="text-xl font-semibold mt-6">5. Dịch vụ bên thứ ba</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">5. Dịch vụ bên thứ ba</h2>
           <p>Ứng dụng sử dụng các dịch vụ bên thứ ba sau đây, có thể thu thập thông tin để nhận dạng bạn:</p>
           <ul className="list-disc pl-6 space-y-2">
             <li><strong>Supabase:</strong> Được sử dụng để xác thực người dùng và lưu trữ dữ liệu.</li>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
             và có nghĩa vụ không tiết lộ hoặc sử dụng nó cho bất kỳ mục đích nào khác.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">6. Bảo mật thông tin của bạn</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">6. Bảo mật thông tin của bạn</h2>
           <p>
             Chúng tôi sử dụng các biện pháp bảo mật hành chính, kỹ thuật và vật lý để giúp bảo vệ thông tin cá nhân của bạn.
             Mặc dù chúng tôi đã thực hiện các bước hợp lý để bảo mật thông tin cá nhân bạn cung cấp cho chúng tôi, xin lưu ý rằng
@@ -103,7 +103,7 @@ export default function PrivacyPolicyPage() {
             truyền dữ liệu nào có thể được đảm bảo chống lại mọi sự chặn hoặc lạm dụng khác.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">7. Quản lý thông tin của bạn</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">7. Quản lý thông tin của bạn</h2>
           <p>
             Bạn có thể xem và thay đổi thông tin cá nhân của mình bằng cách đăng nhập vào Ứng dụng và truy cập phần "Hồ sơ" hoặc "Liên hệ khẩn cấp".
           </p>
@@ -112,19 +112,19 @@ export default function PrivacyPolicyPage() {
             <li><strong>Để quản lý danh bạ:</strong> Truy cập màn hình Liên hệ khẩn cấp để thêm, cập nhật hoặc xóa danh bạ.</li>
           </ul>
 
-          <h2 className="text-xl font-semibold mt-6">8. Quyền riêng tư của trẻ em</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">8. Quyền riêng tư của trẻ em</h2>
           <p>
             Ứng dụng của chúng tôi không dành cho trẻ em dưới 13 tuổi. Chúng tôi không cố ý thu thập thông tin nhận dạng cá nhân từ trẻ em dưới 13 tuổi.
             Nếu bạn là cha mẹ hoặc người giám hộ và bạn biết rằng con bạn đã cung cấp cho chúng tôi Dữ liệu cá nhân, vui lòng liên hệ với chúng tôi.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">9. Thay đổi Chính sách quyền riêng tư này</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">9. Thay đổi Chính sách quyền riêng tư này</h2>
           <p>
             Chúng tôi có thể cập nhật Chính sách quyền riêng tư của mình theo thời gian. Chúng tôi sẽ thông báo cho bạn về bất kỳ thay đổi nào
             bằng cách đăng Chính sách quyền riêng tư mới trên trang này. Bạn nên xem lại Chính sách quyền riêng tư này định kỳ để biết bất kỳ thay đổi nào.
           </p>
 
-          <h2 className="text-xl font-semibold mt-6">10. Liên hệ với chúng tôi</h2>
+          <h2 className="text-lg font-semibold mt-6 sm:text-xl">10. Liên hệ với chúng tôi</h2>
           <p>
             Nếu bạn có bất kỳ câu hỏi hoặc đề xuất nào về Chính sách quyền riêng tư của chúng tôi, đừng ngần ngại liên hệ với chúng tôi.
           </p>

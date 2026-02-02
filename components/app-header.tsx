@@ -87,19 +87,19 @@ export function AppHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-4 lg:px-6">
+    <header className="sticky top-0 z-50 flex h-14 min-h-14 shrink-0 items-center gap-2 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 px-3 sm:gap-4 sm:px-4 lg:h-16 lg:px-6">
       <MobileSidebar />
       
-      {/* Search */}
-      <div className="relative flex-1 max-w-md">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      {/* Search - ẩn trên mobile, hiện từ sm */}
+      <div className="relative hidden flex-1 min-w-0 max-w-md sm:block">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 shrink-0 -translate-y-1/2 text-muted-foreground" />
         <Input
           placeholder="Tìm kiếm người dùng, check-in..."
-          className="pl-9 bg-muted/50"
+          className="pl-9 bg-muted/50 w-full"
         />
       </div>
 
-      <div className="ml-auto flex items-center gap-2">
+      <div className="ml-auto flex shrink-0 items-center gap-1 sm:gap-2">
         {/* Theme Toggle */}
         <Button
           variant="ghost"
@@ -127,7 +127,7 @@ export function AppHeader() {
               <span className="sr-only">Thông báo</span>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-80">
+          <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] max-w-80 sm:w-80">
             <DropdownMenuLabel>Thông báo gần đây</DropdownMenuLabel>
             <DropdownMenuSeparator />
             {loading ? (
@@ -185,7 +185,7 @@ export function AppHeader() {
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-[calc(100vw-2rem)] max-w-56 sm:w-56">
             <DropdownMenuLabel className="font-normal">
               <div className="flex flex-col space-y-1">
                 <p className="text-sm font-medium leading-none">Quản trị viên</p>

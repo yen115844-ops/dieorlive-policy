@@ -4,7 +4,17 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Select,
     SelectContent,
@@ -12,7 +22,9 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Switch } from "@/components/ui/switch";
 import {
     Table,
     TableBody,
@@ -22,15 +34,19 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { api } from "@/lib/api";
+import { cn } from "@/lib/utils";
 import {
     AlertTriangle,
     Bell,
+    Check,
     ChevronLeft,
     ChevronRight,
     Filter,
     Mail,
     RefreshCw,
     Search,
+    Send,
+    Users,
 } from "lucide-react";
 import Link from "next/link";
 import * as React from "react";
@@ -54,6 +70,12 @@ interface NotificationStats {
   emergency: number;
 }
 
+interface UserOption {
+  id: number;
+  email: string;
+  full_name: string | null;
+}
+
 export default function NotificationsPage() {
   const [notifications, setNotifications] = React.useState<Notification[]>([]);
   const [stats, setStats] = React.useState<NotificationStats | null>(null);
@@ -63,6 +85,16 @@ export default function NotificationsPage() {
   const [currentPage, setCurrentPage] = React.useState(1);
   const [totalCount, setTotalCount] = React.useState(0);
   const itemsPerPage = 10;
+
+  // FCM send form
+  const [fcmTitle, setFcmTitle] = React.useState("");
+  const [fcmBody, setFcmBody] = React.useState("");
+  const [sendToAll, setSendToAll] = React.useState(false);
+  const [selectedUserIds, setSelectedUserIds] = React.useState<number[]>([]);
+  const [fcmSending, setFcmSending] = React.useState(false);
+  const [usersForSelect, setUsersForSelect] = React.useState<UserOption[]>([]);
+  const [usersSelectLoading, setUsersSelectLoading] = React.useState(false);
+  const [selectRecipientsOpen, setSelectRecipientsOpen] = React.useState(false);
 
   const fetchNotifications = React.useCallback(async () => {
     try {
@@ -99,6 +131,58 @@ export default function NotificationsPage() {
     return new Date(dateStr).toLocaleString("vi-VN");
   };
 
+  const loadUsersForSelect = React.useCallback(async () => {
+    try {
+      setUsersSelectLoading(true);
+      const result = await api.getUsers({ limit: 200, status: "active" });
+      setUsersForSelect(result.users);
+    } catch (e) {
+      toast.error("Không thể tải danh sách người dùng");
+    } finally {
+      setUsersSelectLoading(false);
+    }
+  }, []);
+
+  const toggleUserSelection = (id: number) => {
+    setSelectedUserIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
+    );
+  };
+
+  const handleSendFcm = async () => {
+    const title = fcmTitle.trim();
+    if (!title) {
+      toast.error("Vui lòng nhập tiêu đề thông báo");
+      return;
+    }
+    if (!sendToAll && selectedUserIds.length === 0) {
+      toast.error("Vui lòng chọn ít nhất một người nhận hoặc bật 'Gửi cho tất cả'");
+      return;
+    }
+    try {
+      setFcmSending(true);
+      const result = await api.sendFcmNotification({
+        title,
+        body: fcmBody.trim() || undefined,
+        sendToAll: sendToAll || undefined,
+        userIds: sendToAll ? undefined : selectedUserIds,
+      });
+      if (result.success) {
+        toast.success(result.message);
+        setFcmTitle("");
+        setFcmBody("");
+        setSelectedUserIds([]);
+        fetchNotifications();
+      } else {
+        toast.error(result.message || "Gửi thất bại");
+      }
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Gửi thông báo FCM thất bại");
+    } finally {
+      setFcmSending(false);
+    }
+  };
+
   const getTypeBadge = (type: string) => {
     switch (type) {
       case "reminder":
@@ -107,6 +191,8 @@ export default function NotificationsPage() {
         return <Badge variant="outline" className="gap-1 border-amber-500 text-amber-500"><AlertTriangle className="h-3 w-3" /> Cảnh báo</Badge>;
       case "emergency_email":
         return <Badge variant="destructive" className="gap-1"><Mail className="h-3 w-3" /> Khẩn cấp</Badge>;
+      case "admin_fcm":
+        return <Badge variant="outline" className="gap-1 border-blue-500 text-blue-600 dark:text-blue-400"><Send className="h-3 w-3" /> Admin FCM</Badge>;
       default:
         return <Badge variant="secondary">{type}</Badge>;
     }
@@ -131,23 +217,23 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Nhật ký thông báo</h1>
-          <p className="text-muted-foreground">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Nhật ký thông báo</h1>
+          <p className="text-sm text-muted-foreground sm:text-base">
             Xem lịch sử tất cả thông báo đã gửi trong hệ thống
           </p>
         </div>
-        <Button variant="outline" onClick={fetchNotifications}>
+        <Button variant="outline" size="sm" className="shrink-0 sm:size-default" onClick={fetchNotifications}>
           <RefreshCw className="mr-2 h-4 w-4" />
           Làm mới
         </Button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 sm:gap-4 md:grid-cols-4">
         <Card>
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
@@ -202,6 +288,133 @@ export default function NotificationsPage() {
         </Card>
       </div>
 
+      {/* Gửi thông báo FCM */}
+      <Card className="min-w-0">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2 text-lg sm:text-xl">
+            <Send className="h-5 w-5" />
+            Gửi thông báo FCM
+          </CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
+            Gửi thông báo đẩy (push) đến 1 hoặc nhiều người dùng qua Firebase Cloud Messaging
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="fcm-title">Tiêu đề <span className="text-destructive">*</span></Label>
+            <Input
+              id="fcm-title"
+              placeholder="Ví dụ: Nhắc nhở điểm danh"
+              value={fcmTitle}
+              onChange={(e) => setFcmTitle(e.target.value)}
+              className="max-w-md"
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="fcm-body">Nội dung (tùy chọn)</Label>
+            <textarea
+              id="fcm-body"
+              placeholder="Nội dung thông báo hiển thị trên thiết bị"
+              value={fcmBody}
+              onChange={(e) => setFcmBody(e.target.value)}
+              className="flex min-h-[80px] w-full max-w-md rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+              rows={3}
+            />
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-6">
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="send-to-all"
+                checked={sendToAll}
+                onCheckedChange={setSendToAll}
+              />
+              <Label htmlFor="send-to-all" className="cursor-pointer">
+                Gửi cho tất cả người dùng có FCM token
+              </Label>
+            </div>
+            {!sendToAll && (
+              <Dialog open={selectRecipientsOpen} onOpenChange={(open) => {
+                setSelectRecipientsOpen(open);
+                if (open) loadUsersForSelect();
+              }}>
+                <DialogTrigger asChild>
+                  <Button type="button" variant="outline" size="sm">
+                    <Users className="mr-2 h-4 w-4" />
+                    Chọn người nhận {selectedUserIds.length > 0 && `(${selectedUserIds.length})`}
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-h-[80vh] flex flex-col sm:max-w-lg">
+                  <DialogHeader>
+                    <DialogTitle>Chọn người nhận</DialogTitle>
+                    <DialogDescription>
+                      Chọn một hoặc nhiều người dùng để gửi thông báo FCM. Chỉ gửi được đến tài khoản có FCM token.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <ScrollArea className="flex-1 rounded-md border p-2 min-h-[200px] max-h-[300px]">
+                    {usersSelectLoading ? (
+                      <div className="space-y-2 p-2">
+                        {[1, 2, 3, 4, 5].map((i) => (
+                          <Skeleton key={i} className="h-10 w-full" />
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="space-y-1">
+                        {usersForSelect.map((u) => {
+                          const selected = selectedUserIds.includes(u.id);
+                          return (
+                            <button
+                              key={u.id}
+                              type="button"
+                              onClick={() => toggleUserSelection(u.id)}
+                              className={cn(
+                                "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-colors hover:bg-muted",
+                                selected && "bg-primary/10"
+                              )}
+                            >
+                              <div className={cn(
+                                "flex h-5 w-5 shrink-0 items-center justify-center rounded border",
+                                selected ? "bg-primary text-primary-foreground border-primary" : "border-input"
+                              )}>
+                                {selected ? <Check className="h-3 w-3" /> : null}
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="font-medium truncate">{u.full_name || "Chưa cập nhật"}</p>
+                                <p className="text-xs text-muted-foreground truncate">{u.email}</p>
+                              </div>
+                            </button>
+                          );
+                        })}
+                        {usersForSelect.length === 0 && !usersSelectLoading && (
+                          <p className="py-4 text-center text-sm text-muted-foreground">Không có người dùng nào</p>
+                        )}
+                      </div>
+                    )}
+                  </ScrollArea>
+                  <DialogFooter>
+                    <Button type="button" variant="outline" onClick={() => setSelectRecipientsOpen(false)}>
+                      Xong
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            )}
+          </div>
+          <Button onClick={handleSendFcm} disabled={fcmSending}>
+            {fcmSending ? (
+              <>
+                <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                Đang gửi...
+              </>
+            ) : (
+              <>
+                <Send className="mr-2 h-4 w-4" />
+                Gửi thông báo FCM
+              </>
+            )}
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Filters */}
       <Card>
         <CardContent className="pt-6">
@@ -234,6 +447,7 @@ export default function NotificationsPage() {
                 <SelectItem value="reminder">Nhắc nhở</SelectItem>
                 <SelectItem value="warning">Cảnh báo</SelectItem>
                 <SelectItem value="emergency_email">Email khẩn cấp</SelectItem>
+                <SelectItem value="admin_fcm">Admin FCM</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -241,14 +455,14 @@ export default function NotificationsPage() {
       </Card>
 
       {/* Notifications Table */}
-      <Card>
+      <Card className="min-w-0">
         <CardHeader>
-          <CardTitle>Danh sách thông báo</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-lg sm:text-xl">Danh sách thông báo</CardTitle>
+          <CardDescription className="text-xs sm:text-sm">
             Tổng cộng {totalCount} thông báo
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto -mx-1 px-1 sm:mx-0 sm:px-6">
           <Table>
             <TableHeader>
               <TableRow>
@@ -309,13 +523,13 @@ export default function NotificationsPage() {
 
           {/* Pagination */}
           {totalPages > 1 && (
-            <div className="flex items-center justify-between pt-4">
-              <p className="text-sm text-muted-foreground">
+            <div className="flex flex-col gap-3 pt-4 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-muted-foreground sm:text-sm order-2 sm:order-1">
                 Hiển thị {(currentPage - 1) * itemsPerPage + 1} -{" "}
                 {Math.min(currentPage * itemsPerPage, totalCount)} của{" "}
                 {totalCount} kết quả
               </p>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center justify-center gap-2 order-1 sm:order-2">
                 <Button
                   variant="outline"
                   size="icon"

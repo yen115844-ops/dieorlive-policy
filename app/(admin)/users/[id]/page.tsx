@@ -420,6 +420,7 @@ export default function UserDetailPage() {
           </Tabs>
         </div>
       </div>
+      </div>
     </div>
   );
 }
